@@ -2,31 +2,28 @@
 
 namespace Asjad\LaravelAI\Services;
 
-use Illuminate\Support\Facades\Http;
+use Asjad\LaravelAI\Drivers\OpenAIProvider;
+use Asjad\LaravelAI\Drivers\MockProvider;
 
 class AIManager
 {
+    protected $driver;
+
+    public function __construct()
+    {
+        $this->driver = $this->resolveDriver();
+    }
+
+    protected function resolveDriver()
+    {
+        return match (config('ai.driver', 'openai')) {
+            'mock' => new MockProvider(),
+            default => new OpenAIProvider(),
+        };
+    }
+
     public function chat(array $messages)
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('ai.api_key'),
-            'Content-Type' => 'application/json',
-        ])
-            ->post('https://api.openai.com/v1/chat/completions', [
-                'model' => config('ai.model', 'gpt-4o-mini'),
-                'messages' => $messages,
-            ]);
-
-        // 🔍 DEBUG if error
-        if ($response->failed()) {
-            dd([
-                'status' => $response->status(),
-                'body' => $response->body(),
-            ]);
-        }
-
-        $json = $response->json();
-
-        return data_get($json, 'choices.0.message.content', 'NO_RESPONSE');
+        return $this->driver->chat($messages);
     }
 }
