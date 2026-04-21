@@ -2,6 +2,7 @@
 
 namespace Asjad\LaravelAI\Services;
 
+use Illuminate\Support\Facades\Http;
 use Asjad\LaravelAI\Drivers\OpenAIProvider;
 use Asjad\LaravelAI\Drivers\MockProvider;
 
