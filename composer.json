@@ -1,0 +1,23 @@
+{
+  "name": "asjadgit/laravel-ai-package",
+  "description": "Laravel AI integration package",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Asjad\\LaravelAI\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Asjad\\LaravelAI\\AIServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "illuminate/support": "^10|^11",
+    "illuminate/http": "^10|^11"
+  }
+}

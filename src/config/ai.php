@@ -1,0 +1,6 @@
+<?php
+
+return [
+    'api_key' => env('AI_API_KEY'),
+    'model' => 'gpt-4o-mini',
+];
