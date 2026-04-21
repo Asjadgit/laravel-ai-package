@@ -26,4 +26,27 @@ class AIManager
     {
         return $this->driver->chat($messages);
     }
+
+    public function stream(array $messages, callable $callback)
+    {
+        $response = Http::withToken(config('ai.api_key'))
+            ->withOptions([
+                'stream' => true,
+            ])
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => config('ai.model', 'gpt-4o-mini'),
+                'messages' => $messages,
+                'stream' => true,
+            ]);
+
+        $body = $response->getBody();
+
+        while (!$body->eof()) {
+            $chunk = $body->read(1024);
+
+            if (!empty($chunk)) {
+                $callback($chunk);
+            }
+        }
+    }
 }
