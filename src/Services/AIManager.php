@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Http;
 
 class AIManager
 {
-    use Illuminate\Support\Facades\Http;
-
     public function chat(array $messages)
     {
         $response = Http::withHeaders([
